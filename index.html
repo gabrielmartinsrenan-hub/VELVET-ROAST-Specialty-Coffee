@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VELVET & ROAST | Specialty Coffee & Urban Bakery</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        velvet: {
+                            base: '#0F0D0C',      /* Ultra dark roasted background */
+                            card: '#181513',      /* Deep obsidian card background */
+                            surface: '#241F1C',   /* Glass/elevated surface */
+                            border: '#362E2A',    /* Subtle border tone */
+                            amber: '#D97706',     /* Warm roast amber */
+                            gold: '#F59E0B',      /* Bright amber gold */
+                            cream: '#FDFBF7',     /* Milk cream font color */
+                            muted: '#A39992',     /* Soft muted text color */
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Smooth custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F0D0C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #362E2A;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D97706;
+        }
+
+        .glass-nav {
+            background: rgba(15, 13, 12, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .glass-card {
+            background: rgba(24, 21, 19, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(245, 158, 11, 0.12);
+        }
+
+        .pulse-open {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-velvet-base text-velvet-cream font-sans antialiased selection:bg-velvet-amber selection:text-white min-h-screen relative overflow-x-hidden">
+
+    <!-- NAVIGATION HEADER -->
+    <header class="fixed top-0 left-0 w-full z-40 glass-nav border-b border-velvet-border/60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- LOGO -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-velvet-amber to-velvet-gold p-[1px] flex items-center justify-center">
+                    <div class="w-full h-full bg-velvet-base rounded-full flex items-center justify-center text-velvet-gold group-hover:bg-velvet-gold group-hover:text-velvet-base transition-all duration-300">
+                        <i data-lucide="flame" class="w-5 h-5"></i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif text-2xl font-bold tracking-wider text-velvet-cream uppercase leading-none">Velvet & Roast</span>
+                    <span class="text-[9px] tracking-[0.25em] text-velvet-gold uppercase font-semibold mt-1">Specialty & Bakery</span>
+                </div>
+            </a>
+
+            <!-- DESKTOP NAV LINKS -->
+            <nav class="hidden lg:flex items-center gap-8 font-medium text-xs uppercase tracking-widest text-velvet-muted">
+                <a href="#home" class="hover:text-velvet-gold transition-colors">Home</a>
+                <a href="#menu" class="hover:text-velvet-gold transition-colors">Menu Explorer</a>
+                <a href="#beans" class="hover:text-velvet-gold transition-colors">Bean Shop</a>
+                <a href="#roastery" class="hover:text-velvet-gold transition-colors">Roastery</a>
+                <a href="#location" class="hover:text-velvet-gold transition-colors">Location</a>
+                <a href="#reservation" class="hover:text-velvet-gold transition-colors">Reservations</a>
+            </nav>
+
+            <!-- ACTION BUTTONS & CART -->
+            <div class="flex items-center gap-4">
+                <!-- Status Badge -->
+                <div id="live-status-pill" class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-open"></span>
+                    <span id="status-text">Open Now</span>
+                </div>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCartDrawer()" class="relative p-2.5 rounded-full bg-velvet-surface hover:bg-velvet-border text-velvet-gold border border-velvet-border transition-all flex items-center justify-center group">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                    <span id="cart-badge-count" class="absolute -top-1 -right-1 bg-velvet-amber text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+
+                <!-- Book Table CTA -->
+                <a href="#reservation" class="hidden md:inline-flex items-center gap-2 bg-gradient-to-r from-velvet-amber to-amber-600 hover:from-amber-600 hover:to-velvet-amber text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-lg hover:shadow-amber-900/40">
+                    <i data-lucide="calendar" class="w-4 h-4"></i>
+                    <span>Book Table</span>
+                </a>
+
+                <!-- Mobile Menu Toggle -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-velvet-cream hover:text-velvet-gold focus:outline-none">
+                    <i data-lucide="menu" id="mobile-menu-icon" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- MOBILE NAV DRAWER -->
+        <div id="mobile-nav" class="hidden lg:hidden bg-velvet-card/95 border-b border-velvet-border px-6 py-6 space-y-4 text-sm font-medium uppercase tracking-widest text-velvet-muted">
+            <a href="#home" onclick="toggleMobileMenu()" class="block py-2 hover:text-velvet-gold border-b border-velvet-border/40">Home</a>
+            <a href="#menu" onclick="toggleMobileMenu()" class="block py-2 hover:text-velvet-gold border-b border-velvet-border/40">Menu Explorer</a>
+            <a href="#beans" onclick="toggleMobileMenu()" class="block py-2 hover:text-velvet-gold border-b border-velvet-border/40">Bean Shop</a>
+            <a href="#roastery" onclick="toggleMobileMenu()" class="block py-2 hover:text-velvet-gold border-b border-velvet-border/40">Our Story</a>
+            <a href="#location" onclick="toggleMobileMenu()" class="block py-2 hover:text-velvet-gold border-b border-velvet-border/40">Location & Hours</a>
+            <a href="#reservation" onclick="toggleMobileMenu()" class="block py-2 text-velvet-gold font-bold">Book a Table</a>
+        </div>
+    </header>
+
+    <!-- 1. HERO SECTION -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
+        <!-- Background Dark Mood Image with Blur & Gradients -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=1800&auto=format&fit=crop" alt="Dark Roastery Interior" class="w-full h-full object-cover opacity-25 scale-105 transform">
+            <div class="absolute inset-0 bg-gradient-to-t from-velvet-base via-velvet-base/80 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-velvet-base/90 via-transparent to-velvet-base/90"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-12">
+            <!-- Subtle Tag -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-velvet-card border border-velvet-gold/30 text-velvet-gold text-xs font-semibold uppercase tracking-widest mb-8">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Urban Micro-Roastery & Bakery
+            </div>
+
+            <!-- Headline -->
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl font-normal tracking-tight text-velvet-cream leading-[1.05] mb-8">
+                Crafted with <span class="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-velvet-gold via-amber-400 to-amber-600">Passion,</span><br> Poured with Precision.
+            </h1>
+
+            <p class="text-base sm:text-lg md:text-xl text-velvet-muted max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+                Single-origin micro-lots, slow pour-overs, and sourdough viennoiserie baked fresh every morning in the heart of the city.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#menu" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-velvet-amber to-amber-600 hover:from-amber-600 hover:to-velvet-amber text-white font-semibold text-sm uppercase tracking-wider transition-all shadow-xl hover:shadow-amber-900/50 flex items-center justify-center gap-2 group">
+                    <span>Explore Menu</span>
+                    <i data-lucide="arrow-down-right" class="w-4 h-4 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></i>
+                </a>
+                <a href="#beans" class="w-full sm:w-auto px-8 py-4 rounded-full bg-velvet-card hover:bg-velvet-surface text-velvet-cream border border-velvet-border hover:border-velvet-gold/50 font-semibold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="package" class="w-4 h-4 text-velvet-gold"></i>
+                    <span>Buy Roasted Beans</span>
+                </a>
+            </div>
+
+            <!-- Highlights Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-20 pt-10 border-t border-velvet-border/60 text-left">
+                <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                    <i data-lucide="globe" class="w-6 h-6 text-velvet-gold mb-3"></i>
+                    <h4 class="font-serif text-lg font-bold text-velvet-cream">Micro-Lots</h4>
+                    <p class="text-xs text-velvet-muted mt-1">Directly sourced from 85+ score estates.</p>
+                </div>
+                <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                    <i data-lucide="flame" class="w-6 h-6 text-velvet-gold mb-3"></i>
+                    <h4 class="font-serif text-lg font-bold text-velvet-cream">Light-Medium Roast</h4>
+                    <p class="text-xs text-velvet-muted mt-1">Preserving natural origin sweetness.</p>
+                </div>
+                <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                    <i data-lucide="croissant" class="w-6 h-6 text-velvet-gold mb-3"></i>
+                    <h4 class="font-serif text-lg font-bold text-velvet-cream">Sourdough Bakery</h4>
+                    <p class="text-xs text-velvet-muted mt-1">72-hour slow-ferment pastries.</p>
+                </div>
+                <div class="glass-card p-4 sm:p-5 rounded-2xl">
+                    <i data-lucide="leaf" class="w-6 h-6 text-velvet-gold mb-3"></i>
+                    <h4 class="font-serif text-lg font-bold text-velvet-cream">100% Sustainable</h4>
+                    <p class="text-xs text-velvet-muted mt-1">Zero plastic, eco-certified packaging.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. INTERACTIVE MENU EXPLORER SECTION -->
+    <section id="menu" class="py-24 bg-velvet-base relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-velvet-gold font-semibold text-xs uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-6 h-[1px] bg-velvet-gold"></span> Gastronomic Collection
+                    </span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-normal text-velvet-cream mt-2">Menu Explorer</h2>
+                </div>
+                <p class="text-velvet-muted text-sm max-w-md mt-4 md:mt-0 font-light">
+                    Filter our artisanal drinks and sourdough baked goods. Customize your milk, temperature, and sweetness level.
+                </p>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-4 mb-10 no-scrollbar" id="menu-category-tabs">
+                <button onclick="filterMenuCategory('all')" class="category-tab active px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold transition-all bg-velvet-gold text-velvet-base shadow-lg">All Items</button>
+                <button onclick="filterMenuCategory('espresso')" class="category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold transition-all bg-velvet-card text-velvet-muted hover:text-velvet-cream hover:bg-velvet-surface border border-velvet-border">Signature Espresso</button>
+                <button onclick="filterMenuCategory('coldbrew')" class="category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold transition-all bg-velvet-card text-velvet-muted hover:text-velvet-cream hover:bg-velvet-surface border border-velvet-border">Cold Brew & Draft</button>
+                <button onclick="filterMenuCategory('filter')" class="category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold transition-all bg-velvet-card text-velvet-muted hover:text-velvet-cream hover:bg-velvet-surface border border-velvet-border">Hand Pour V60</button>
+                <button onclick="filterMenuCategory('pastries')" class="category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold transition-all bg-velvet-card text-velvet-muted hover:text-velvet-cream hover:bg-velvet-surface border border-velvet-border">Pastries & Bakery</button>
+                <button onclick="filterMenuCategory('brunch')" class="category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold transition-all bg-velvet-card text-velvet-muted hover:text-velvet-cream hover:bg-velvet-surface border border-velvet-border">Brunch & Toast</button>
+            </div>
+
+            <!-- Menu Items Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="menu-items-grid">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. RETAIL BEAN BAG SHOP -->
+    <section id="beans" class="py-24 bg-velvet-card/60 border-y border-velvet-border relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-velvet-gold font-semibold text-xs uppercase tracking-widest">Take Velvet & Roast Home</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-normal text-velvet-cream mt-2">Whole Bean Bags</h2>
+                <p class="text-velvet-muted text-sm mt-3 font-light">Freshly roasted every Tuesday in small 5kg batches. Choose your roast profile and custom grind size.</p>
+            </div>
+
+            <!-- Beans Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="bean-shop-grid">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. OUR ROASTERY & BREW PHILOSOPHY -->
+    <section id="roastery" class="py-24 bg-velvet-base">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <div class="relative">
+                    <div class="rounded-3xl overflow-hidden border border-velvet-border shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?q=80&w=1000&auto=format&fit=crop" alt="Coffee roasting machinery" class="w-full h-[460px] object-cover">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 glass-card p-6 rounded-2xl hidden sm:block max-w-xs border border-velvet-gold/30">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i data-lucide="award" class="w-6 h-6 text-velvet-gold"></i>
+                            <span class="font-serif font-bold text-velvet-cream">SCA Certified 88+</span>
+                        </div>
+                        <p class="text-xs text-velvet-muted">Our roasting master fine-tunes thermal curves for optimum floral & fruity notes.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <span class="text-velvet-gold font-semibold text-xs uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-6 h-[1px] bg-velvet-gold"></span> The Roastery Concept
+                    </span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-normal text-velvet-cream leading-tight">
+                        Precision engineering meets old-world craftsmanship.
+                    </h2>
+                    <p class="text-velvet-muted text-sm leading-relaxed font-light">
+                        At Velvet & Roast, coffee is an art of patience. We source exclusively from high-altitude farms above 1,600 meters, ensuring dense beans packed with rich organic sugars.
+                    </p>
+                    <p class="text-velvet-muted text-sm leading-relaxed font-light">
+                        Every batch is roasted on our custom cast-iron drum roaster, profiling each origin to highlight its natural terroir—never over-roasting, never compromising.
+                    </p>
+
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-velvet-border">
+                        <div>
+                            <span class="font-serif text-3xl font-bold text-velvet-gold block">100%</span>
+                            <span class="text-[10px] uppercase text-velvet-muted tracking-wider">Traceable Farm Lots</span>
+                        </div>
+                        <div>
+                            <span class="font-serif text-3xl font-bold text-velvet-gold block">18h</span>
+                            <span class="text-[10px] uppercase text-velvet-muted tracking-wider">Cold Nitro Steep</span>
+                        </div>
+                        <div>
+                            <span class="font-serif text-3xl font-bold text-velvet-gold block">72h</span>
+                            <span class="text-[10px] uppercase text-velvet-muted tracking-wider">Sourdough Ferment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. REVIEWS & INSTAGRAM FEED -->
+    <section class="py-20 bg-velvet-card/40 border-y border-velvet-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-velvet-gold font-semibold text-xs uppercase tracking-widest">Community Voices</span>
+                <h2 class="font-serif text-4xl font-normal text-velvet-cream mt-2">Loved by Coffee Purists</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex text-velvet-gold gap-1 mb-4 text-xs">
+                        ★★★★★
+                    </div>
+                    <p class="text-xs text-velvet-muted italic leading-relaxed mb-6">"The Nitro Cold Brew is unreal. Velvet smooth with zero bitterness. Best coffee spot in the city."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-velvet-amber text-white font-serif font-bold flex items-center justify-center text-xs">JH</div>
+                        <div>
+                            <h4 class="font-semibold text-xs text-velvet-cream">Julian Hayes</h4>
+                            <span class="text-[10px] text-velvet-muted">Architect</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex text-velvet-gold gap-1 mb-4 text-xs">
+                        ★★★★★
+                    </div>
+                    <p class="text-xs text-velvet-muted italic leading-relaxed mb-6">"Sourdough pistachio croissants paired with a V60 Geisha pour-over. Pure morning perfection."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-velvet-gold text-velvet-base font-serif font-bold flex items-center justify-center text-xs">CL</div>
+                        <div>
+                            <h4 class="font-semibold text-xs text-velvet-cream">Claire Laurent</h4>
+                            <span class="text-[10px] text-velvet-muted">Food Critic</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex text-velvet-gold gap-1 mb-4 text-xs">
+                        ★★★★★
+                    </div>
+                    <p class="text-xs text-velvet-muted italic leading-relaxed mb-6">"Fast local delivery for whole beans. Smells like heaven every time I open the bag!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-velvet-surface text-velvet-gold font-serif font-bold flex items-center justify-center text-xs">DR</div>
+                        <div>
+                            <h4 class="font-semibold text-xs text-velvet-cream">David Ross</h4>
+                            <span class="text-[10px] text-velvet-muted">Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instagram Grid -->
+            <div class="text-center mb-6">
+                <span class="text-xs text-velvet-muted uppercase tracking-widest font-semibold">Follow Our Journey @VelvetAndRoast</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="relative group rounded-xl overflow-hidden aspect-square">
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-velvet-base/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-velvet-gold">
+                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <div class="relative group rounded-xl overflow-hidden aspect-square">
+                    <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-velvet-base/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-velvet-gold">
+                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <div class="relative group rounded-xl overflow-hidden aspect-square">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-velvet-base/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-velvet-gold">
+                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <div class="relative group rounded-xl overflow-hidden aspect-square">
+                    <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-velvet-base/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-velvet-gold">
+                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. TABLE RESERVATIONS -->
+    <section id="reservation" class="py-24 bg-velvet-base">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-velvet-gold font-semibold text-xs uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-6 h-[1px] bg-velvet-gold"></span> Table Booking
+                    </span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-normal text-velvet-cream">Reserve Your Spot</h2>
+                    <p class="text-velvet-muted text-sm leading-relaxed font-light">
+                        Whether you are holding a morning meeting, studying in our lounge, or savoring weekend brunch with friends, reserve ahead for a seamless experience.
+                    </p>
+
+                    <div class="p-6 rounded-2xl glass-card space-y-4">
+                        <div class="flex items-center gap-3 text-sm text-velvet-cream">
+                            <i data-lucide="wifi" class="w-5 h-5 text-velvet-gold"></i>
+                            <span>High-Speed Fiber Wi-Fi + Power Outlets</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm text-velvet-cream">
+                            <i data-lucide="sun" class="w-5 h-5 text-velvet-gold"></i>
+                            <span>Outdoor Heated Sunlit Terrace</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm text-velvet-cream">
+                            <i data-lucide="dog" class="w-5 h-5 text-velvet-gold"></i>
+                            <span>Pet Friendly Environment</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 bg-velvet-card p-8 rounded-3xl border border-velvet-border">
+                    <form onsubmit="handleReservationSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs uppercase font-semibold text-velvet-muted mb-2">Full Name</label>
+                                <input type="text" required placeholder="Alexander Wright" class="w-full bg-velvet-surface border border-velvet-border rounded-xl px-4 py-3 text-sm text-velvet-cream focus:outline-none focus:border-velvet-gold">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-semibold text-velvet-muted mb-2">Phone Number</label>
+                                <input type="tel" required placeholder="+1 (555) 019-2834" class="w-full bg-velvet-surface border border-velvet-border rounded-xl px-4 py-3 text-sm text-velvet-cream focus:outline-none focus:border-velvet-gold">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs uppercase font-semibold text-velvet-muted mb-2">Guests</label>
+                                <div class="flex items-center bg-velvet-surface border border-velvet-border rounded-xl p-1">
+                                    <button type="button" onclick="adjustGuestCount(-1)" class="w-10 h-9 flex items-center justify-center text-velvet-muted hover:text-white font-bold">-</button>
+                                    <span id="guest-count-display" class="flex-1 text-center font-bold text-sm text-velvet-cream">2</span>
+                                    <button type="button" onclick="adjustGuestCount(1)" class="w-10 h-9 flex items-center justify-center text-velvet-muted hover:text-white font-bold">+</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-semibold text-velvet-muted mb-2">Date</label>
+                                <input type="date" required class="w-full bg-velvet-surface border border-velvet-border rounded-xl px-4 py-2.5 text-sm text-velvet-cream focus:outline-none focus:border-velvet-gold">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-semibold text-velvet-muted mb-2">Time Slot</label>
+                                <select class="w-full bg-velvet-surface border border-velvet-border rounded-xl px-4 py-3 text-sm text-velvet-cream focus:outline-none focus:border-velvet-gold">
+                                    <option>08:30 AM</option>
+                                    <option>10:00 AM</option>
+                                    <option selected>11:30 AM</option>
+                                    <option>02:00 PM</option>
+                                    <option>04:30 PM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs uppercase font-semibold text-velvet-muted mb-2">Seating Area Preference</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="seating" value="Indoor Lounge" checked class="peer hidden">
+                                    <div class="p-3 text-center rounded-xl bg-velvet-surface border border-velvet-border text-xs text-velvet-muted peer-checked:border-velvet-gold peer-checked:text-velvet-gold font-semibold">
+                                        Indoor Lounge
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="seating" value="Sunlit Patio" class="peer hidden">
+                                    <div class="p-3 text-center rounded-xl bg-velvet-surface border border-velvet-border text-xs text-velvet-muted peer-checked:border-velvet-gold peer-checked:text-velvet-gold font-semibold">
+                                        Sunlit Patio
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="seating" value="Espresso Bar" class="peer hidden">
+                                    <div class="p-3 text-center rounded-xl bg-velvet-surface border border-velvet-border text-xs text-velvet-muted peer-checked:border-velvet-gold peer-checked:text-velvet-gold font-semibold">
+                                        Espresso Bar
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-velvet-amber to-amber-600 hover:from-amber-600 hover:to-velvet-amber text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg">
+                            Confirm Reservation
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. LOCATION & OPENING HOURS WIDGET -->
+    <section id="location" class="py-24 bg-velvet-card/60 border-t border-velvet-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <div class="space-y-8">
+                    <div>
+                        <span class="text-velvet-gold font-semibold text-xs uppercase tracking-widest">Find Us</span>
+                        <h2 class="font-serif text-4xl sm:text-5xl font-normal text-velvet-cream mt-2">Location & Hours</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-xl bg-velvet-surface text-velvet-gold border border-velvet-border">
+                                <i data-lucide="map-pin" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif font-bold text-lg text-velvet-cream">Flagship Roastery</h4>
+                                <p class="text-xs text-velvet-muted mt-1">782 Mercer Street, Soho District, New York, NY 10012</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-xl bg-velvet-surface text-velvet-gold border border-velvet-border">
+                                <i data-lucide="clock" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif font-bold text-lg text-velvet-cream">Opening Schedule</h4>
+                                <p class="text-xs text-velvet-muted mt-1">Mon – Fri: 07:00 AM – 07:00 PM</p>
+                                <p class="text-xs text-velvet-muted">Sat – Sun: 08:00 AM – 08:00 PM</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-xl bg-velvet-surface text-velvet-gold border border-velvet-border">
+                                <i data-lucide="mail" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif font-bold text-lg text-velvet-cream">Get In Touch</h4>
+                                <p class="text-xs text-velvet-muted mt-1">hello@velvetandroast.com / +1 (212) 555-0198</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Map Visual Box -->
+                <div class="h-80 w-full rounded-3xl bg-velvet-surface border border-velvet-border overflow-hidden relative flex items-center justify-center p-6 text-center">
+                    <div class="absolute inset-0 opacity-30">
+                        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover">
+                    </div>
+                    <div class="relative z-10 glass-card p-6 rounded-2xl max-w-sm border border-velvet-gold/30">
+                        <i data-lucide="navigation" class="w-8 h-8 text-velvet-gold mx-auto mb-3"></i>
+                        <h4 class="font-serif font-bold text-lg text-velvet-cream">Valet & Street Parking Available</h4>
+                        <p class="text-xs text-velvet-muted mt-2">Located just 2 blocks from Prince St Subway Station.</p>
+                        <a href="https://maps.google.com" target="_blank" class="inline-block mt-4 text-xs font-bold text-velvet-gold uppercase tracking-wider hover:underline">Open in Google Maps &rarr;</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-velvet-base border-t border-velvet-border text-velvet-muted py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="flame" class="w-6 h-6 text-velvet-gold"></i>
+                        <span class="font-serif text-2xl font-bold text-velvet-cream">VELVET & ROAST</span>
+                    </div>
+                    <p class="text-xs leading-relaxed font-light">
+                        Nordic-inspired contemporary dark roastery and sourdough bakery. Pouring warmth every day.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-serif text-sm font-bold text-velvet-cream uppercase tracking-widest mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#menu" class="hover:text-velvet-gold transition-colors">Specialty Drinks</a></li>
+                        <li><a href="#beans" class="hover:text-velvet-gold transition-colors">Roasted Bean Shop</a></li>
+                        <li><a href="#roastery" class="hover:text-velvet-gold transition-colors">Ethical Sourcing</a></li>
+                        <li><a href="#reservation" class="hover:text-velvet-gold transition-colors">Table Booking</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-serif text-sm font-bold text-velvet-cream uppercase tracking-widest mb-4">Join Velvet Club</h4>
+                    <p class="text-xs mb-3 font-light">Subscribe for 10% off your first online whole-bean order.</p>
+                    <form onsubmit="handleNewsletterSubmit(event)" class="flex gap-2">
+                        <input type="email" required placeholder="Enter your email" class="bg-velvet-surface border border-velvet-border text-xs px-3 py-2 rounded-lg text-velvet-cream focus:outline-none w-full">
+                        <button type="submit" class="bg-velvet-amber text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-amber-600 transition-colors">Join</button>
+                    </form>
+                </div>
+
+                <div>
+                    <h4 class="font-serif text-sm font-bold text-velvet-cream uppercase tracking-widest mb-4">Social Media</h4>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-9 h-9 rounded-full bg-velvet-surface border border-velvet-border flex items-center justify-center text-velvet-gold hover:bg-velvet-gold hover:text-velvet-base transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-velvet-surface border border-velvet-border flex items-center justify-center text-velvet-gold hover:bg-velvet-gold hover:text-velvet-base transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-velvet-surface border border-velvet-border flex items-center justify-center text-velvet-gold hover:bg-velvet-gold hover:text-velvet-base transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-velvet-border/40 flex flex-col sm:flex-row justify-between items-center text-[11px] gap-4">
+                <p>&copy; 2026 VELVET & ROAST LLC. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:underline">Privacy Policy</a>
+                    <a href="#" class="hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CART DRAWER (SLIDE OUT) -->
+    <div id="cart-drawer-overlay" onclick="toggleCartDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    
+    <div id="cart-drawer-panel" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-velvet-card z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col border-l border-velvet-border">
+        
+        <!-- Drawer Header -->
+        <div class="p-6 bg-velvet-base border-b border-velvet-border flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-velvet-gold"></i>
+                <h3 class="font-serif text-xl font-bold text-velvet-cream">Your Order Bag</h3>
+            </div>
+            <button onclick="toggleCartDrawer()" class="p-1 text-velvet-muted hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Drawer Body Items -->
+        <div id="cart-drawer-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- Injected via JS -->
+        </div>
+
+        <!-- Order Options & Calculator Footer -->
+        <div class="p-6 border-t border-velvet-border bg-velvet-base/90 space-y-4">
+            
+            <!-- Fulfillment Mode -->
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-velvet-muted mb-2">Fulfillment Mode</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="setFulfillment('dine-in')" id="mode-dine-in" class="py-2 text-xs font-semibold rounded-lg border border-velvet-gold bg-velvet-gold text-velvet-base transition-all">Dine-In</button>
+                    <button onclick="setFulfillment('pickup')" id="mode-pickup" class="py-2 text-xs font-semibold rounded-lg border border-velvet-border bg-velvet-surface text-velvet-muted hover:text-white transition-all">Pickup</button>
+                    <button onclick="setFulfillment('delivery')" id="mode-delivery" class="py-2 text-xs font-semibold rounded-lg border border-velvet-border bg-velvet-surface text-velvet-muted hover:text-white transition-all">Delivery</button>
+                </div>
+            </div>
+
+            <!-- Tip Selector -->
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-velvet-muted mb-2">Barista Tip</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button onclick="setTip(0)" class="tip-btn py-1.5 text-xs rounded-md bg-velvet-surface border border-velvet-border text-velvet-muted">0%</button>
+                    <button onclick="setTip(10)" class="tip-btn py-1.5 text-xs rounded-md bg-velvet-surface border border-velvet-border text-velvet-muted">10%</button>
+                    <button onclick="setTip(15)" class="tip-btn active py-1.5 text-xs rounded-md border border-velvet-gold bg-velvet-gold/20 text-velvet-gold">15%</button>
+                    <button onclick="setTip(20)" class="tip-btn py-1.5 text-xs rounded-md bg-velvet-surface border border-velvet-border text-velvet-muted">20%</button>
+                </div>
+            </div>
+
+            <!-- Total Calculation Summary -->
+            <div class="space-y-1.5 pt-2 text-xs border-t border-velvet-border/60">
+                <div class="flex justify-between text-velvet-muted">
+                    <span>Subtotal:</span>
+                    <span id="calc-subtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between text-velvet-muted">
+                    <span>Tax (8.875%):</span>
+                    <span id="calc-tax">$0.00</span>
+                </div>
+                <div class="flex justify-between text-velvet-muted">
+                    <span>Barista Tip:</span>
+                    <span id="calc-tip">$0.00</span>
+                </div>
+                <div class="flex justify-between text-sm font-bold text-velvet-cream pt-2 border-t border-velvet-border">
+                    <span>Total Amount:</span>
+                    <span id="calc-total" class="font-serif text-xl text-velvet-gold">$0.00</span>
+                </div>
+            </div>
+
+            <!-- WhatsApp Order Checkout -->
+            <button onclick="checkoutViaWhatsApp()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
+                <span>Complete Order via WhatsApp</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- CUSTOMIZABLE ITEM MODAL -->
+    <div id="customizer-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-velvet-card border border-velvet-border rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl">
+            <div class="relative h-48">
+                <img id="modal-img" src="" class="w-full h-full object-cover">
+                <button onclick="closeCustomizerModal()" class="absolute top-4 right-4 p-2 rounded-full bg-black/60 text-white hover:bg-black">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <h3 id="modal-title" class="font-serif text-2xl font-bold text-velvet-cream"></h3>
+                    <p id="modal-desc" class="text-xs text-velvet-muted mt-1"></p>
+                </div>
+
+                <!-- Custom Milk Choice -->
+                <div id="modal-milk-group">
+                    <label class="block text-xs uppercase font-bold text-velvet-muted mb-2">Select Dairy / Plant Milk</label>
+                    <select id="modal-milk-select" class="w-full bg-velvet-surface border border-velvet-border rounded-xl px-4 py-2.5 text-xs text-velvet-cream focus:outline-none">
+                        <option value="Whole Milk">Whole Organic Milk (Standard)</option>
+                        <option value="Oat Milk">Oat Milk (+$0.75)</option>
+                        <option value="Almond Milk">Almond Milk (+$0.85)</option>
+                        <option value="Pistachio Milk">Artisanal Pistachio Milk (+$1.25)</option>
+                    </select>
+                </div>
+
+                <!-- Temperature Choice -->
+                <div>
+                    <label class="block text-xs uppercase font-bold text-velvet-muted mb-2">Serving Temperature</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="modal-temp" value="Hot" checked class="peer hidden">
+                            <div class="p-2.5 text-center rounded-xl bg-velvet-surface border border-velvet-border text-xs text-velvet-muted peer-checked:border-velvet-gold peer-checked:text-velvet-gold font-semibold">
+                                Hot Steam
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="modal-temp" value="Iced" class="peer hidden">
+                            <div class="p-2.5 text-center rounded-xl bg-velvet-surface border border-velvet-border text-xs text-velvet-muted peer-checked:border-velvet-gold peer-checked:text-velvet-gold font-semibold">
+                                Over Ice
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button id="modal-add-btn" class="w-full py-3.5 bg-velvet-amber hover:bg-amber-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg">
+                    Add Customized Item to Bag
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toast-notify" class="fixed bottom-6 right-6 bg-velvet-card text-velvet-cream px-5 py-3.5 rounded-2xl shadow-2xl border border-velvet-gold/40 transform translate-y-24 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+        <span id="toast-notify-text" class="text-xs font-semibold">Item added successfully</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // DATA SOURCES
+        const menuProducts = [
+            {
+                id: 101,
+                name: "Velvet Nitro Cold Brew",
+                category: "coldbrew",
+                price: 6.50,
+                notes: ["Notes of Blueberry & Dark Cocoa", "Cascading Cream Head"],
+                description: "Infused with pure nitrogen gas for a thick, velvety draught pour with natural sweetness.",
+                image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=500&auto=format&fit=crop",
+                isCustomizable: false
+            },
+            {
+                id: 102,
+                name: "Golden Pistachio Latte",
+                category: "espresso",
+                price: 6.80,
+                notes: ["Roasted Pistachio", "Vanilla Bean Crema"],
+                description: "Double ristretto espresso folded into micro-foamed pistachio milk and sprinkled with crushed nuts.",
+                image: "https://images.unsplash.com/photo-1534778101976-62847782c213?q=80&w=500&auto=format&fit=crop",
+                isCustomizable: true
+            },
+            {
+                id: 103,
+                name: "Geisha V60 Hand Pour",
+                category: "filter",
+                price: 8.50,
+                notes: ["Jasmine Floral", "Peach & Bergamot"],
+                description: "Single-origin Panama Geisha lot pour-over brewed slow to unlock ultra-delicate floral complexity.",
+                image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=500&auto=format&fit=crop",
+                isCustomizable: false
+            },
+            {
+                id: 104,
+                name: "Cardamom & Smoked Vanilla Flat White",
+                category: "espresso",
+                price: 5.90,
+                notes: ["Warm Cardamom Spice", "Smoked Bourbon Vanilla"],
+                description: "Rich espresso infused with freshly crushed cardamom pods and real Madagascar vanilla bean.",
+                image: "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?q=80&w=500&auto=format&fit=crop",
+                isCustomizable: true
+            },
+            {
+                id: 105,
+                name: "Sourdough Pistachio Croissant",
+                category: "pastries",
+                price: 5.50,
+                notes: ["72h Fermentation", "Bronte Pistachio Cream"],
+                description: "Laminated butter sourdough crust filled with velvety roasted pistachio frangipane.",
+                image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=500&auto=format&fit=crop",
+                isCustomizable: false
+            },
+            {
+                id: 106,
+                name: "Truffled Avocado & Soft Egg Toast",
+                category: "brunch",
+                price: 13.50,
+                notes: ["Organic Sourdough", "White Truffle Oil"],
+                description: "Thick slice of toasted brioche sourdough, smashed Haas avocado, soft poached egg, and chilli flakes.",
+                image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=500&auto=format&fit=crop",
+                isCustomizable: false
+            }
+        ];
+
+        const beanBags = [
+            {
+                id: 201,
+                title: "Ethiopia Yirgacheffe - Worka Sakaro",
+                roast: "Light Filter Roast",
+                notes: "Jasmine, Lemon Verbena, Earl Grey Tea",
+                altitude: "2,100m MASL",
+                price: 22.00,
+                image: "https://images.unsplash.com/photo-1587734195503-904fca47e0e9?q=80&w=500&auto=format&fit=crop"
+            },
+            {
+                id: 202,
+                title: "Colombia Huila - Pink Bourbon",
+                roast: "Medium Espresso Roast",
+                notes: "Red Apple, Dulce de Leche, Macadamia",
+                altitude: "1,850m MASL",
+                price: 24.50,
+                image: "https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?q=80&w=500&auto=format&fit=crop"
+            },
+            {
+                id: 203,
+                title: "Guatemala Huehuetenango - Finca El Limo",
+                roast: "Dark Velvet Roast",
+                notes: "Dark Chocolate, Toasted Hazelnut, Plum",
+                altitude: "1,900m MASL",
+                price: 21.00,
+                image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=500&auto=format&fit=crop"
+            }
+        ];
+
+        // GLOBAL APP STATE
+        let cartItems = [];
+        let currentFulfillment = 'dine-in';
+        let currentTipPercent = 15;
+        let currentGuestCount = 2;
+        let activeCustomizerItem = null;
+
+        // RENDER MENU EXPLORER
+        function renderMenuItems(items) {
+            const container = document.getElementById('menu-items-grid');
+            container.innerHTML = '';
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-3xl overflow-hidden flex flex-col justify-between hover:border-velvet-gold/40 transition-all duration-300 group";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-52 overflow-hidden">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 right-3 font-serif font-bold text-sm bg-velvet-base/90 backdrop-blur-md text-velvet-gold px-3 py-1 rounded-full border border-velvet-gold/30">
+                                $${item.price.toFixed(2)}
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-1.5 mb-3">
+                                ${item.notes.map(note => `<span class="text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md bg-velvet-surface text-velvet-gold border border-velvet-border">${note}</span>`).join('')}
+                            </div>
+                            <h3 class="font-serif text-2xl font-bold text-velvet-cream mb-2">${item.name}</h3>
+                            <p class="text-xs text-velvet-muted leading-relaxed font-light mb-4">${item.description}</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0">
+                        ${item.isCustomizable ? `
+                            <button onclick="openCustomizerModal(${item.id})" class="w-full py-3 rounded-xl bg-velvet-surface hover:bg-velvet-amber text-velvet-cream hover:text-white font-bold text-xs uppercase tracking-widest transition-all border border-velvet-border flex items-center justify-center gap-2">
+                                <i data-lucide="sliders" class="w-4 h-4"></i> Customize & Add
+                            </button>
+                        ` : `
+                            <button onclick="addStandardItemToCart(${item.id})" class="w-full py-3 rounded-xl bg-velvet-surface hover:bg-velvet-amber text-velvet-cream hover:text-white font-bold text-xs uppercase tracking-widest transition-all border border-velvet-border flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Quick Add
+                            </button>
+                        `}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // RENDER BEAN BAG SHOP
+        function renderBeanShop() {
+            const container = document.getElementById('bean-shop-grid');
+            container.innerHTML = '';
+
+            beanBags.forEach(bag => {
+                const card = document.createElement('div');
+                card.className = "glass-card p-6 rounded-3xl flex flex-col justify-between border border-velvet-border hover:border-velvet-gold/40 transition-all";
+                card.innerHTML = `
+                    <div>
+                        <div class="h-48 rounded-2xl overflow-hidden mb-4 relative">
+                            <img src="${bag.image}" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-velvet-amber text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">${bag.roast}</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-velvet-cream">${bag.title}</h3>
+                        <p class="text-xs text-velvet-gold font-semibold mt-1 mb-2">${bag.notes}</p>
+                        <span class="text-[10px] uppercase text-velvet-muted font-bold block mb-4">Altitude: ${bag.altitude}</span>
+
+                        <div class="space-y-2 mb-4">
+                            <label class="block text-[10px] uppercase font-bold text-velvet-muted">Select Grind Style:</label>
+                            <select id="grind-${bag.id}" class="w-full bg-velvet-surface border border-velvet-border text-xs text-velvet-cream p-2.5 rounded-xl focus:outline-none">
+                                <option>Whole Bean (Un-ground)</option>
+                                <option>Espresso Grind (Fine)</option>
+                                <option>V60 / Filter Grind (Medium)</option>
+                                <option>French Press Grind (Coarse)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-xs text-velvet-muted font-semibold">250g Bag</span>
+                            <span class="font-serif text-2xl font-bold text-velvet-cream">$${bag.price.toFixed(2)}</span>
+                        </div>
+                        <button onclick="addBeanBagToCart(${bag.id})" class="w-full py-3 rounded-xl bg-velvet-amber hover:bg-amber-600 text-white font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg">
+                            <i data-lucide="shopping-bag" class="w-4 h-4"></i> Add Bag To Cart
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // FILTER MENU CATEGORY
+        function filterMenuCategory(category) {
+            const tabs = document.querySelectorAll('.category-tab');
+            tabs.forEach(t => {
+                t.className = "category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold transition-all bg-velvet-card text-velvet-muted hover:text-velvet-cream hover:bg-velvet-surface border border-velvet-border";
+            });
+            event.currentTarget.className = "category-tab active px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold transition-all bg-velvet-gold text-velvet-base shadow-lg";
+
+            if (category === 'all') {
+                renderMenuItems(menuProducts);
+            } else {
+                const filtered = menuProducts.filter(p => p.category === category);
+                renderMenuItems(filtered);
+            }
+        }
+
+        // CART LOGIC
+        function addStandardItemToCart(itemId) {
+            const item = menuProducts.find(p => p.id === itemId);
+            cartItems.push({
+                cartId: Date.now(),
+                name: item.name,
+                price: item.price,
+                details: "Standard Brew",
+                quantity: 1
+            });
+            updateCartDrawerUI();
+            triggerToastNotification(`${item.name} added to bag!`);
+        }
+
+        function addBeanBagToCart(bagId) {
+            const bag = beanBags.find(b => b.id === bagId);
+            const grindSelect = document.getElementById(`grind-${bagId}`);
+            const selectedGrind = grindSelect.value;
+
+            cartItems.push({
+                cartId: Date.now(),
+                name: bag.title,
+                price: bag.price,
+                details: `Grind: ${selectedGrind}`,
+                quantity: 1
+            });
+            updateCartDrawerUI();
+            triggerToastNotification(`${bag.title} added to bag!`);
+        }
+
+        function openCustomizerModal(itemId) {
+            activeCustomizerItem = menuProducts.find(p => p.id === itemId);
+            const modal = document.getElementById('customizer-modal');
+            document.getElementById('modal-img').src = activeCustomizerItem.image;
+            document.getElementById('modal-title').innerText = activeCustomizerItem.name;
+            document.getElementById('modal-desc').innerText = activeCustomizerItem.description;
+
+            document.getElementById('modal-add-btn').onclick = function() {
+                const milkSelect = document.getElementById('modal-milk-select');
+                const selectedMilk = milkSelect.value;
+                const tempOption = document.querySelector('input[name="modal-temp"]:checked').value;
+
+                let extra = 0;
+                if (selectedMilk.includes('Oat')) extra = 0.75;
+                if (selectedMilk.includes('Almond')) extra = 0.85;
+                if (selectedMilk.includes('Pistachio')) extra = 1.25;
+
+                cartItems.push({
+                    cartId: Date.now(),
+                    name: activeCustomizerItem.name,
+                    price: activeCustomizerItem.price + extra,
+                    details: `${tempOption} | ${selectedMilk}`,
+                    quantity: 1
+                });
+
+                closeCustomizerModal();
+                updateCartDrawerUI();
+                triggerToastNotification(`Customized ${activeCustomizerItem.name} added!`);
+            };
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeCustomizerModal() {
+            const modal = document.getElementById('customizer-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function updateCartDrawerUI() {
+            const container = document.getElementById('cart-drawer-items');
+            const badgeCount = document.getElementById('cart-badge-count');
+            container.innerHTML = '';
+
+            let subtotal = 0;
+            let count = 0;
+
+            if (cartItems.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 text-velvet-muted">
+                        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
+                        <p class="text-xs">Your bag is currently empty.</p>
+                    </div>
+                `;
+            } else {
+                cartItems.forEach((item, index) => {
+                    subtotal += item.price * item.quantity;
+                    count += item.quantity;
+
+                    const row = document.createElement('div');
+                    row.className = "flex justify-between items-center p-3 rounded-xl bg-velvet-surface border border-velvet-border";
+                    row.innerHTML = `
+                        <div>
+                            <h4 class="font-serif font-bold text-sm text-velvet-cream">${item.name}</h4>
+                            <p class="text-[10px] text-velvet-gold">${item.details}</p>
+                            <span class="text-xs font-bold text-velvet-cream mt-1 block">$${(item.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeCartQty(${index}, -1)" class="w-6 h-6 rounded-md bg-velvet-card text-velvet-cream font-bold text-xs flex items-center justify-center">-</button>
+                            <span class="text-xs font-bold text-velvet-cream">${item.quantity}</span>
+                            <button onclick="changeCartQty(${index}, 1)" class="w-6 h-6 rounded-md bg-velvet-card text-velvet-cream font-bold text-xs flex items-center justify-center">+</button>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                });
+            }
+
+            // Calculations
+            const tax = subtotal * 0.08875;
+            const tip = subtotal * (currentTipPercent / 100);
+            const grandTotal = subtotal + tax + tip;
+
+            document.getElementById('calc-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('calc-tax').innerText = `$${tax.toFixed(2)}`;
+            document.getElementById('calc-tip').innerText = `$${tip.toFixed(2)}`;
+            document.getElementById('calc-total').innerText = `$${grandTotal.toFixed(2)}`;
+
+            if (count > 0) {
+                badgeCount.innerText = count;
+                badgeCount.classList.remove('hidden');
+            } else {
+                badgeCount.classList.add('hidden');
+            }
+
+            lucide.createIcons();
+        }
+
+        function changeCartQty(index, delta) {
+            cartItems[index].quantity += delta;
+            if (cartItems[index].quantity <= 0) {
+                cartItems.splice(index, 1);
+            }
+            updateCartDrawerUI();
+        }
+
+        function setFulfillment(mode) {
+            currentFulfillment = mode;
+            ['dine-in', 'pickup', 'delivery'].forEach(m => {
+                const btn = document.getElementById(`mode-${m}`);
+                if (m === mode) {
+                    btn.className = "py-2 text-xs font-semibold rounded-lg border border-velvet-gold bg-velvet-gold text-velvet-base transition-all";
+                } else {
+                    btn.className = "py-2 text-xs font-semibold rounded-lg border border-velvet-border bg-velvet-surface text-velvet-muted hover:text-white transition-all";
+                }
+            });
+        }
+
+        function setTip(percentage) {
+            currentTipPercent = percentage;
+            const buttons = document.querySelectorAll('.tip-btn');
+            buttons.forEach(btn => {
+                btn.className = "tip-btn py-1.5 text-xs rounded-md bg-velvet-surface border border-velvet-border text-velvet-muted";
+            });
+            event.currentTarget.className = "tip-btn active py-1.5 text-xs rounded-md border border-velvet-gold bg-velvet-gold/20 text-velvet-gold font-bold";
+            updateCartDrawerUI();
+        }
+
+        function toggleCartDrawer() {
+            const panel = document.getElementById('cart-drawer-panel');
+            const overlay = document.getElementById('cart-drawer-overlay');
+
+            const isOpen = !panel.classList.contains('translate-x-full');
+            if (isOpen) {
+                panel.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                panel.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        function checkoutViaWhatsApp() {
+            if (cartItems.length === 0) {
+                triggerToastNotification("Your order bag is empty!");
+                return;
+            }
+
+            let text = `🔥 *New Order - VELVET & ROAST*\n`;
+            text += `*Fulfillment:* ${currentFulfillment.toUpperCase()}\n\n`;
+            text += `*Bag Contents:*\n`;
+
+            let subtotal = 0;
+            cartItems.forEach(item => {
+                const itemTot = item.price * item.quantity;
+                subtotal += itemTot;
+                text += `• ${item.quantity}x ${item.name} (${item.details}) - $${itemTot.toFixed(2)}\n`;
+            });
+
+            const tax = subtotal * 0.08875;
+            const tip = subtotal * (currentTipPercent / 100);
+            const total = subtotal + tax + tip;
+
+            text += `\n*Subtotal:* $${subtotal.toFixed(2)}`;
+            text += `\n*Tax:* $${tax.toFixed(2)}`;
+            text += `\n*Barista Tip:* $${tip.toFixed(2)}`;
+            text += `\n*GRAND TOTAL:* $${total.toFixed(2)}\n\n`;
+            text += `Ready for processing!`;
+
+            window.open(`https://wa.me/12125550198?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // RESERVATIONS & FORMS
+        function adjustGuestCount(delta) {
+            currentGuestCount = Math.max(1, currentGuestCount + delta);
+            document.getElementById('guest-count-display').innerText = currentGuestCount;
+        }
+
+        function handleReservationSubmit(e) {
+            e.preventDefault();
+            triggerToastNotification("Table reserved! Confirmation code sent via SMS.");
+            e.target.reset();
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            triggerToastNotification("Welcome to Velvet Club! 10% coupon emailed.");
+            e.target.reset();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-nav');
+            menu.classList.toggle('hidden');
+        }
+
+        function triggerToastNotification(msg) {
+            const toast = document.getElementById('toast-notify');
+            const txt = document.getElementById('toast-notify-text');
+            txt.innerText = msg;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3200);
+        }
+
+        // INIT ON LOAD
+        window.onload = function() {
+            lucide.createIcons();
+            renderMenuItems(menuProducts);
+            renderBeanShop();
+            updateCartDrawerUI();
+        };
+    </script>
+</body>
+</html>
